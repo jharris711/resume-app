@@ -11,7 +11,7 @@ import SignUpForm from '@/components/forms/signup-form';
 
 const page = () => {
   return (
-    <div>
+    <div className='flex flex-col items-center justify-center min-h-screen'>
       <Card className='w-[350px]'>
         <CardHeader>
           <CardTitle>Sign Up</CardTitle>
