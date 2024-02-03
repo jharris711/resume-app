@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import SignUpForm from '@/components/forms/SignUpForm';
+import SignUpForm from '@/components/forms/signup-form';
 
 const page = () => {
   return (
