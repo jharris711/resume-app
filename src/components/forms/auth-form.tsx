@@ -5,6 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import { cn } from '@/lib/utils';
+import { LogInValidation } from '@/lib/validation/login';
 import { buttonVariants } from '@/components/ui/button';
 import {
   Form,
@@ -15,19 +17,15 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { signup } from '@/lib/actions/signup';
-import { cn } from '@/lib/utils';
-import { SignUpValidation } from '@/lib/validation/signup';
+import { login } from '@/lib/actions/login';
 
-interface SignUpFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface AuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export const SignUpForm = ({ className, ...props }: SignUpFormProps) => {
-  const form = useForm<z.infer<typeof SignUpValidation>>({
-    resolver: zodResolver(SignUpValidation),
+export function AuthForm({ className, ...props }: AuthFormProps) {
+  const form = useForm<z.infer<typeof LogInValidation>>({
+    resolver: zodResolver(LogInValidation),
     defaultValues: {
       email: '',
-      username: '',
-      name: '',
       password: '',
     },
   });
@@ -74,11 +72,11 @@ export const SignUpForm = ({ className, ...props }: SignUpFormProps) => {
               </FormItem>
             )}
           />
-          <button formAction={signup} className={cn(buttonVariants())}>
-            Sign Up with Email
+          <button formAction={login} className={cn(buttonVariants())}>
+            Sign In with Email
           </button>
         </form>
       </Form>
     </div>
   );
-};
+}
