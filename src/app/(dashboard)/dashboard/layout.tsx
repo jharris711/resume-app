@@ -23,18 +23,15 @@ export default async function DashboardLayout({
   const supabase = createClient(cookieStore);
   const { data: sessionData } = await readUserSession();
 
-  if (!sessionData.session) {
-    return redirect('/login');
-  }
+  if (!sessionData.session) redirect('/login');
 
   const { data: user, error } = await supabase
     .from('Users')
     .select()
     .eq('id', sessionData.session.user.id);
 
-  if (!user) {
-    return redirect('/login');
-  }
+  if (error) redirect('/error');
+  if (!user) redirect('/login');
 
   return (
     <div className='flex min-h-screen flex-col space-y-6'>
