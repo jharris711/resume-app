@@ -23,18 +23,15 @@ export default async function DashboardLayout({
   const supabase = createClient(cookieStore);
   const { data: sessionData } = await readUserSession();
 
-  if (!sessionData.session) {
-    return redirect('/login');
-  }
+  if (!sessionData.session) redirect('/login');
 
   const { data: user, error } = await supabase
     .from('Users')
     .select()
     .eq('id', sessionData.session.user.id);
 
-  if (!user) {
-    return redirect('/login');
-  }
+  if (error) redirect('/error');
+  if (!user) redirect('/login');
 
   return (
     <div className='flex min-h-screen flex-col space-y-6'>
@@ -49,10 +46,11 @@ export default async function DashboardLayout({
           />
         </div>
       </header>
-      <div className='container grid flex-1 gap-12 md:grid-cols-[200px_1fr]'>
-        <aside className='hidden w-[200px] flex-col md:flex'>
+      {/* <div className='container grid flex-1 gap-12 md:grid-cols-[200px_1fr]'> */}
+      <div className='container grid flex-1 gap-12 w-full'>
+        {/* <aside className='hidden w-[200px] flex-col md:flex'>
           <DashboardNav items={dashboardConfig.sidebarNav} />
-        </aside>
+        </aside> */}
         <main className='flex w-full flex-1 flex-col overflow-hidden'>
           {children}
         </main>
