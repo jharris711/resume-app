@@ -17,14 +17,14 @@ export async function POST(req: NextRequest) {
         },
         remove(name: string, options: CookieOptions) {
           cookieStore.set({ name, value: '', ...options });
-        },
-      },
+        }
+      }
     }
   );
 
   // Check if we have a session
   const {
-    data: { user },
+    data: { user }
   } = await supabase.auth.getUser();
 
   if (user) {
@@ -32,6 +32,6 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.redirect(new URL('/', req.url), {
-    status: 302,
+    status: 302
   });
 }

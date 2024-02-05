@@ -12,7 +12,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { signup } from '@/lib/actions/signup';
@@ -21,37 +21,37 @@ import { SignUpValidation } from '@/lib/validation/signup';
 
 interface SignUpFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export const SignUpForm = ({ className, ...props }: SignUpFormProps) => {
+export const SignUpForm = ({ className }: SignUpFormProps) => {
   const form = useForm<z.infer<typeof SignUpValidation>>({
     resolver: zodResolver(SignUpValidation),
     defaultValues: {
       email: '',
       username: '',
       name: '',
-      password: '',
-    },
+      password: ''
+    }
   });
 
   return (
     <div className={cn('grid gap-6', className)}>
       <Form {...form}>
-        <form className='grid gap-2'>
+        <form className="grid gap-2">
           <FormField
             control={form.control}
-            name='email'
+            name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='sr-only' htmlFor='email'>
+                <FormLabel className="sr-only" htmlFor="email">
                   Email
                 </FormLabel>
                 <FormControl>
                   <Input
-                    id='email'
-                    type='email'
-                    autoCapitalize='none'
-                    autoComplete='email'
-                    autoCorrect='off'
-                    placeholder='Email'
+                    id="email"
+                    type="email"
+                    autoCapitalize="none"
+                    autoComplete="email"
+                    autoCorrect="off"
+                    placeholder="Email"
                     {...field}
                   />
                 </FormControl>
@@ -61,14 +61,14 @@ export const SignUpForm = ({ className, ...props }: SignUpFormProps) => {
           />
           <FormField
             control={form.control}
-            name='password'
+            name="password"
             render={({ field }) => (
-              <FormItem className='pb-2'>
-                <FormLabel className='sr-only' htmlFor='email'>
+              <FormItem className="pb-2">
+                <FormLabel className="sr-only" htmlFor="email">
                   Password
                 </FormLabel>
                 <FormControl>
-                  <Input type='password' placeholder='Password' {...field} />
+                  <Input type="password" placeholder="Password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
