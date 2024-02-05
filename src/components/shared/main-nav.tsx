@@ -21,21 +21,21 @@ export function MainNav({ items, children }: MainNavProps) {
   const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
 
   return (
-    <div className='flex gap-6 md:gap-10'>
-      <Link href='/' className='hidden items-center space-x-2 md:flex'>
+    <div className="flex gap-6 md:gap-10">
+      <Link href="/" className="hidden items-center space-x-2 md:flex">
         <Icons.logo />
-        <span className='hidden font-bold sm:inline-block'>
+        <span className="hidden font-bold sm:inline-block">
           {siteConfig.name}
         </span>
       </Link>
       {items?.length ? (
-        <nav className='hidden gap-6 md:flex'>
+        <nav className="hidden gap-6 md:flex">
           {items?.map((item, index) => (
             <Link
               key={index}
               href={item.disabled ? '#' : item.href}
               className={cn(
-                'flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm',
+                'hover:text-foreground/80 flex items-center text-lg font-medium transition-colors sm:text-sm',
                 item.href.startsWith(`${pathname}`)
                   ? 'text-foreground'
                   : 'text-foreground/60',
@@ -48,11 +48,11 @@ export function MainNav({ items, children }: MainNavProps) {
         </nav>
       ) : null}
       <button
-        className='flex items-center space-x-2 md:hidden'
+        className="flex items-center space-x-2 md:hidden"
         onClick={() => setShowMobileMenu(!showMobileMenu)}
       >
         {showMobileMenu ? <Icons.close /> : <Icons.logo />}
-        <span className='font-bold'>Menu</span>
+        <span className="font-bold">Menu</span>
       </button>
       {showMobileMenu && items && (
         <MobileNav items={items}>{children}</MobileNav>

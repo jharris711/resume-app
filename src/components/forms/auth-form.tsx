@@ -14,42 +14,42 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { login } from '@/lib/actions/login';
 
 interface AuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function AuthForm({ className, ...props }: AuthFormProps) {
+export function AuthForm({ className }: AuthFormProps) {
   const form = useForm<z.infer<typeof LogInValidation>>({
     resolver: zodResolver(LogInValidation),
     defaultValues: {
       email: '',
-      password: '',
-    },
+      password: ''
+    }
   });
 
   return (
     <div className={cn('grid gap-6', className)}>
       <Form {...form}>
-        <form className='grid gap-2'>
+        <form className="grid gap-2">
           <FormField
             control={form.control}
-            name='email'
+            name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='sr-only' htmlFor='email'>
+                <FormLabel className="sr-only" htmlFor="email">
                   Email
                 </FormLabel>
                 <FormControl>
                   <Input
-                    id='email'
-                    type='email'
-                    autoCapitalize='none'
-                    autoComplete='email'
-                    autoCorrect='off'
-                    placeholder='Email'
+                    id="email"
+                    type="email"
+                    autoCapitalize="none"
+                    autoComplete="email"
+                    autoCorrect="off"
+                    placeholder="Email"
                     {...field}
                   />
                 </FormControl>
@@ -59,14 +59,14 @@ export function AuthForm({ className, ...props }: AuthFormProps) {
           />
           <FormField
             control={form.control}
-            name='password'
+            name="password"
             render={({ field }) => (
-              <FormItem className='pb-2'>
-                <FormLabel className='sr-only' htmlFor='email'>
+              <FormItem className="pb-2">
+                <FormLabel className="sr-only" htmlFor="email">
                   Password
                 </FormLabel>
                 <FormControl>
-                  <Input type='password' placeholder='Password' {...field} />
+                  <Input type="password" placeholder="Password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

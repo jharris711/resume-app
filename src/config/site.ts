@@ -8,6 +8,6 @@ export const siteConfig: SiteConfig = {
   ogImage: 'https://tx.shadcn.com/og.jpg',
   links: {
     twitter: 'https://twitter.com/ResumendApp',
-    github: 'https://github.com/jharris711/resume-app',
-  },
+    github: 'https://github.com/jharris711/resume-app'
+  }
 };

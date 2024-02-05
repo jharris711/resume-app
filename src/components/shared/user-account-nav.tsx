@@ -9,7 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { UserAvatar } from '@/components/shared/user-avatar';
 
@@ -25,15 +25,15 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
       <DropdownMenuTrigger>
         <UserAvatar
           user={{ full_name: user.full_name || null }}
-          className='h-8 w-8'
+          className="size-8"
         />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='end'>
-        <div className='flex items-center justify-start gap-2 p-2'>
-          <div className='flex flex-col space-y-1 leading-none'>
-            {user.full_name && <p className='font-medium'>{user.full_name}</p>}
+      <DropdownMenuContent align="end">
+        <div className="flex items-center justify-start gap-2 p-2">
+          <div className="flex flex-col space-y-1 leading-none">
+            {user.full_name && <p className="font-medium">{user.full_name}</p>}
             {user.email && (
-              <p className='w-[200px] truncate text-sm text-muted-foreground'>
+              <p className="text-muted-foreground w-[200px] truncate text-sm">
                 {user.email}
               </p>
             )}
@@ -41,18 +41,18 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href='/dashboard'>Dashboard</Link>
+          <Link href="/dashboard">Dashboard</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href='/dashboard/billing'>Billing</Link>
+          <Link href="/dashboard/billing">Billing</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href='/dashboard/settings'>Settings</Link>
+          <Link href="/dashboard/settings">Settings</Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <form action='/signout' method='post'>
-          <DropdownMenuItem className='cursor-pointer'>
-            <button type='submit'>Sign out</button>
+        <form action="/signout" method="post">
+          <DropdownMenuItem className="cursor-pointer">
+            <button type="submit">Sign out</button>
           </DropdownMenuItem>
         </form>
       </DropdownMenuContent>
