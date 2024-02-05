@@ -15,8 +15,8 @@ export function createClient(cookieStore: ReturnType<typeof cookies>) {
         },
         remove(name: string, options: CookieOptions) {
           cookieStore.set({ name, value: '', ...options });
-        },
-      },
+        }
+      }
     }
   );
 }

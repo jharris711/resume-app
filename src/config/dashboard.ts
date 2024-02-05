@@ -4,31 +4,31 @@ export const dashboardConfig: DashboardConfig = {
   mainNav: [
     {
       title: 'Dashboard',
-      href: '/dashboard',
+      href: '/dashboard'
     },
     {
       title: 'Resume Assistant',
-      href: '/',
+      href: '/'
     },
     {
       title: 'Resources',
-      href: '/',
+      href: '/'
     },
     {
       title: 'Help',
-      href: '/',
-    },
+      href: '/'
+    }
   ],
   sidebarNav: [
     {
       title: 'Dashboard',
       href: '/dashboard',
-      icon: 'layoutDashboard',
+      icon: 'layoutDashboard'
     },
     {
       title: 'Settings',
       href: '/dashboard/settings',
-      icon: 'settings',
-    },
-  ],
+      icon: 'settings'
+    }
+  ]
 };

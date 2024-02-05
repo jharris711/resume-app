@@ -4,19 +4,19 @@ export const marketingConfig: MarketingConfig = {
   mainNav: [
     {
       title: 'Dashboard',
-      href: '/dashboard',
+      href: '/dashboard'
     },
     {
       title: 'Resume Assistant',
-      href: '/',
+      href: '/'
     },
     {
       title: 'Resources',
-      href: '/',
+      href: '/'
     },
     {
       title: 'Help',
-      href: '/',
-    },
-  ],
+      href: '/'
+    }
+  ]
 };

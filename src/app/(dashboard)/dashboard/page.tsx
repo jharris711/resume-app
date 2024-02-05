@@ -6,7 +6,7 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from '@/components/ui/card';
 
 import { CalendarDateRangePicker } from '@/components/shared/date-range-picker';
@@ -16,75 +16,75 @@ import { Icons } from '@/components/shared/icons';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
-  description: 'Example dashboard app built using the components.',
+  description: 'Example dashboard app built using the components.'
 };
 
 const page = () => {
   return (
-    <div className='flex-1 space-y-4 p-8 pt-6'>
-      <div className='flex items-center justify-between space-y-2'>
-        <h2 className='text-3xl font-bold tracking-tight'>Dashboard</h2>
-        <div className='flex items-center space-x-2'>
+    <div className="flex-1 space-y-4 p-8 pt-6">
+      <div className="flex items-center justify-between space-y-2">
+        <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+        <div className="flex items-center space-x-2">
           <CalendarDateRangePicker />
           <Button>Download</Button>
         </div>
       </div>
-      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Resumes</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Resumes</CardTitle>
 
-            <Icons.fileText className='h-4 w-4 text-muted-foreground' />
+            <Icons.fileText className="text-muted-foreground size-4" />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>23</div>
-            <p className='text-xs text-muted-foreground'>resumes created</p>
+            <div className="text-2xl font-bold">23</div>
+            <p className="text-muted-foreground text-xs">resumes created</p>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Job Specs</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Job Specs</CardTitle>
 
-            <Icons.clipboard className='h-4 w-4 text-muted-foreground' />
+            <Icons.clipboard className="text-muted-foreground size-4" />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>15</div>
-            <p className='text-xs text-muted-foreground'>listings uploaded</p>
+            <div className="text-2xl font-bold">15</div>
+            <p className="text-muted-foreground text-xs">listings uploaded</p>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Submissions</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Submissions</CardTitle>
 
-            <Icons.send className='h-4 w-4 text-muted-foreground' />
+            <Icons.send className="text-muted-foreground size-4" />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>12</div>
-            <p className='text-xs text-muted-foreground'>resumes sent</p>
+            <div className="text-2xl font-bold">12</div>
+            <p className="text-muted-foreground text-xs">resumes sent</p>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-            <CardTitle className='text-sm font-medium'>Edits</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Edits</CardTitle>
 
-            <Icons.pencil className='h-4 w-4 text-muted-foreground' />
+            <Icons.pencil className="text-muted-foreground size-4" />
           </CardHeader>
           <CardContent>
-            <div className='text-2xl font-bold'>57</div>
-            <p className='text-xs text-muted-foreground'>recent changes</p>
+            <div className="text-2xl font-bold">57</div>
+            <p className="text-muted-foreground text-xs">recent changes</p>
           </CardContent>
         </Card>
       </div>
-      <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-7'>
-        <Card className='col-span-4'>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        <Card className="col-span-4">
           <CardHeader>
             <CardTitle>Overview</CardTitle>
           </CardHeader>
-          <CardContent className='pl-2'>
+          <CardContent className="pl-2">
             <DashboardOverview />
           </CardContent>
         </Card>
-        <Card className='col-span-3'>
+        <Card className="col-span-3">
           <CardHeader>
             <CardTitle>Recent Resumes</CardTitle>
             <CardDescription>
