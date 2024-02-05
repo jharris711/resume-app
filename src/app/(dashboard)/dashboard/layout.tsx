@@ -10,8 +10,6 @@ import { createClient } from '@/lib/supabase/server';
 import { readUserSession } from '@/lib/actions/read-user-session';
 import type { Database } from '@/lib/types/supabase';
 
-type User = Database['public']['Tables']['Users']['Row'];
-
 interface DashboardLayoutProps {
   children?: React.ReactNode;
 }
@@ -26,7 +24,7 @@ export default async function DashboardLayout({
   if (!sessionData.session) redirect('/login');
 
   const { data: user, error } = await supabase
-    .from('Users')
+    .from('profiles')
     .select()
     .eq('id', sessionData.session.user.id);
 
@@ -40,7 +38,7 @@ export default async function DashboardLayout({
           <MainNav items={dashboardConfig.mainNav} />
           <UserAccountNav
             user={{
-              name: user[0].name || '',
+              full_name: user[0].full_name || '',
               email: user[0].email,
             }}
           />

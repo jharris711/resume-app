@@ -26,8 +26,6 @@ export const SignUpForm = ({ className, ...props }: SignUpFormProps) => {
     resolver: zodResolver(SignUpValidation),
     defaultValues: {
       email: '',
-      username: '',
-      name: '',
       password: '',
     },
   });

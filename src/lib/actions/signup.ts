@@ -16,24 +16,13 @@ export async function signup(formData: FormData) {
   };
 
   // Sign up user to Auth service
-  const { data: res, error: authError } = await supabase.auth.signUp(data);
+  const { data: res, error } = await supabase.auth.signUp(data);
 
-  if (authError) {
+  if (error) {
+    console.log(error);
     redirect('/error');
   }
 
-  if (res && res.user) {
-    // Save auth user to DB
-    const { error: dbError } = await supabase.from('Users').insert({
-      id: res.user.id,
-      email: res.user.email,
-    });
-
-    if (dbError) {
-      redirect('/error');
-    }
-
-    revalidatePath('/', 'layout');
-    redirect('/');
-  }
+  revalidatePath('/', 'layout');
+  redirect('/');
 }
