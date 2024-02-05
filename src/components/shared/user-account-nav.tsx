@@ -1,10 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { Database } from '@/lib/types/supabase';
-/* 
-import { User } from 'next-auth';
-import { signOut } from 'next-auth/react'; */
+import { redirect } from 'next/navigation';
+
+import type { Database } from '@/lib/types/supabase';
 
 import {
   DropdownMenu,
@@ -50,17 +49,15 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
           <Link href='/dashboard/settings'>Settings</Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        {/* <DropdownMenuItem
+        <DropdownMenuItem
           className='cursor-pointer'
           onSelect={(event) => {
             event.preventDefault();
-            signOut({
-              callbackUrl: `${window.location.origin}/login`,
-            });
+            redirect('/signout');
           }}
         >
           Sign out
-        </DropdownMenuItem> */}
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
