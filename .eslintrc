@@ -1,0 +1,36 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "ecmaVersion": 2020,
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+
+  "extends": [
+    "airbnb-typescript",
+    "plugin:prettier/recommended",
+    "next/core-web-vitals"
+  ],
+
+  "rules": {
+    "react/no-danger": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    "no-console": "error",
+    "prettier/prettier": "off"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "env": {
+    "node": true,
+    "browser": true,
+    "amd": true
+  }
+}
