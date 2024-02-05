@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+
 import { Database } from '@/lib/types/supabase';
 
 import {
@@ -46,17 +47,11 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
           <Link href='/dashboard/settings'>Settings</Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        {/* <DropdownMenuItem
-          className='cursor-pointer'
-          onSelect={(event) => {
-            event.preventDefault();
-            signOut({
-              callbackUrl: `${window.location.origin}/login`,
-            });
-          }}
-        >
-          Sign out
-        </DropdownMenuItem> */}
+        <form action='/signout' method='post'>
+          <DropdownMenuItem className='cursor-pointer'>
+            <button type='submit'>Sign out</button>
+          </DropdownMenuItem>
+        </form>
       </DropdownMenuContent>
     </DropdownMenu>
   );
