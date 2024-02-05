@@ -9,27 +9,71 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      Users: {
+      profiles: {
         Row: {
-          bio: string | null
-          created_at: string
-          email: string
+          avatar_url: string | null
+          email: string | null
+          full_name: string | null
           id: string
-          name: string | null
+          updated_at: string | null
+          username: string | null
+          website: string | null
         }
         Insert: {
-          bio?: string | null
-          created_at?: string
-          email: string
-          id?: string
-          name?: string | null
+          avatar_url?: string | null
+          email?: string | null
+          full_name?: string | null
+          id: string
+          updated_at?: string | null
+          username?: string | null
+          website?: string | null
         }
         Update: {
-          bio?: string | null
-          created_at?: string
-          email?: string
+          avatar_url?: string | null
+          email?: string | null
+          full_name?: string | null
           id?: string
-          name?: string | null
+          updated_at?: string | null
+          username?: string | null
+          website?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      resumes: {
+        Row: {
+          created_at: string
+          file_path: string | null
+          id: string
+          resume_id: string | null
+          updated_at: string | null
+          user_id: string | null
+          version: number | null
+        }
+        Insert: {
+          created_at?: string
+          file_path?: string | null
+          id?: string
+          resume_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+          version?: number | null
+        }
+        Update: {
+          created_at?: string
+          file_path?: string | null
+          id?: string
+          resume_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+          version?: number | null
         }
         Relationships: []
       }
