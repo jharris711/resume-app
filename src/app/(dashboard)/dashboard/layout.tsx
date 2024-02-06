@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 
 import { dashboardConfig } from '@/config/dashboard';
+import { DashboardNav } from '@/components/shared/dashboard-nav';
 import { MainNav } from '@/components/shared/main-nav';
 import { SiteFooter } from '@/components/shared/site-footer';
 import { UserAccountNav } from '@/components/shared/user-account-nav';
@@ -42,11 +43,10 @@ export default async function DashboardLayout({
           />
         </div>
       </header>
-      {/* <div className='container grid flex-1 gap-12 md:grid-cols-[200px_1fr]'> */}
-      <div className="container grid w-full flex-1 gap-12">
-        {/* <aside className='hidden w-[200px] flex-col md:flex'>
+      <div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
+        <aside className="hidden w-[200px] flex-col md:flex">
           <DashboardNav items={dashboardConfig.sidebarNav} />
-        </aside> */}
+        </aside>
         <main className="flex w-full flex-1 flex-col overflow-hidden">
           {children}
         </main>
