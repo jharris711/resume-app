@@ -25,8 +25,6 @@ type Profile = Database['public']['Tables']['profiles']['Row'];
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 export function ProfileForm({ profile }: { profile: Profile }) {
-  if (!profile) return;
-
   const defaultValues: Partial<ProfileFormValues> = {
     full_name: profile.full_name ?? '',
     email: profile.email ?? '',
@@ -42,6 +40,8 @@ export function ProfileForm({ profile }: { profile: Profile }) {
     defaultValues,
     mode: 'onChange'
   });
+
+  if (!profile) return;
 
   return (
     <Form {...form}>
