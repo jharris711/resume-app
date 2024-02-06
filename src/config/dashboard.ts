@@ -29,6 +29,11 @@ export const dashboardConfig: DashboardConfig = {
       title: 'Profile',
       href: '/dashboard/profile',
       icon: 'user'
+    },
+    {
+      title: 'Work History',
+      href: '/dashboard/work-history',
+      icon: 'history'
     }
   ]
 };

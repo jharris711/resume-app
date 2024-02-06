@@ -12,7 +12,7 @@ import {
 import { CalendarDateRangePicker } from '@/components/shared/date-range-picker';
 import { DashboardOverview } from '@/components/shared/dashboard-overview';
 import { RecentSales } from '@/components/shared/recent-sales';
-import { Icons } from '@/components/shared/icons';
+import { Icons } from '@/components/icons/icons';
 
 export const metadata: Metadata = {
   title: 'Dashboard',

@@ -2,7 +2,7 @@ import { AvatarProps } from '@radix-ui/react-avatar';
 
 import { Database } from '@/lib/types/supabase';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Icons } from '@/components/shared/icons';
+import { Icons } from '@/components/icons/icons';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 

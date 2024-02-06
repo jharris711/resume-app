@@ -6,7 +6,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       profiles: {
@@ -96,36 +96,36 @@ export interface Database {
         Row: {
           company_name: string;
           created_at: string;
-          end_date: string;
+          end_date: string | null;
           id: string;
           job_description: string | null;
           job_title: string;
           location: string | null;
-          start_date: string;
+          start_date: string | null;
           updated_at: string;
           user_id: string;
         };
         Insert: {
           company_name: string;
           created_at?: string;
-          end_date: string;
+          end_date?: string | null;
           id?: string;
           job_description?: string | null;
           job_title: string;
           location?: string | null;
-          start_date: string;
+          start_date?: string | null;
           updated_at: string;
           user_id: string;
         };
         Update: {
           company_name?: string;
           created_at?: string;
-          end_date?: string;
+          end_date?: string | null;
           id?: string;
           job_description?: string | null;
           job_title?: string;
           location?: string | null;
-          start_date?: string;
+          start_date?: string | null;
           updated_at?: string;
           user_id?: string;
         };
@@ -153,7 +153,7 @@ export interface Database {
       [_ in never]: never;
     };
   };
-}
+};
 
 export type Tables<
   PublicTableNameOrOptions extends
