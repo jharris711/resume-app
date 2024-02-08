@@ -16,10 +16,9 @@ export async function signup(formData: FormData) {
   };
 
   // Sign up user to Auth service
-  const { data: res, error } = await supabase.auth.signUp(data);
+  const { error } = await supabase.auth.signUp(data);
 
   if (error) {
-    console.log(error);
     redirect('/error');
   }
 

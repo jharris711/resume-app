@@ -1,5 +1,7 @@
 'use client';
 
+import React from 'react';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
@@ -7,7 +9,6 @@ import { format } from 'date-fns';
 import { z } from 'zod';
 
 import { cn } from '@/lib/utils';
-import { Database } from '@/lib/types/supabase';
 import { WorkHistoryValidation } from '@/lib/validation/work-history';
 import { Button } from '@/components/ui/button';
 import {
@@ -23,17 +24,20 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Icons } from '../icons/icons';
 import { Calendar } from '../ui/calendar';
-import { createWorkHistory } from '@/lib/actions/create-work-history';
+import { createClient } from '@/lib/supabase/client';
 
 type WorkHistoryFormValues = z.infer<typeof WorkHistoryValidation>;
 
-export function WorkHistoryForm() {
+export function WorkHistoryForm({ userId }: { userId: string }) {
+  const router = useRouter();
+  const supabase = createClient();
+
   const defaultValues: Partial<WorkHistoryFormValues> = {
     job_title: '',
     company_name: '',
     location: '',
-    start_date: new Date(Date.now()),
-    end_date: new Date(Date.now()),
+    start_date: '',
+    end_date: '',
     job_description: ''
   };
 
@@ -43,9 +47,24 @@ export function WorkHistoryForm() {
     mode: 'onChange'
   });
 
+  const handleSubmit = async (data: WorkHistoryFormValues) => {
+    const { error } = await supabase
+      .from('work-history')
+      .upsert({
+        user_id: userId,
+        updated_at: new Date(Date.now()).toISOString(),
+        ...data
+      })
+      .select();
+
+    if (error) {
+      router.push('/error');
+    }
+  };
+
   return (
     <Form {...form}>
-      <form className="space-y-3">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-3">
         <FormField
           control={form.control}
           name="job_title"
@@ -92,37 +111,41 @@ export function WorkHistoryForm() {
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>Start Date</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={'outline'}
-                        className={cn(
-                          'w-[240px] pl-3 text-left font-normal',
-                          !field.value && 'text-muted-foreground'
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, 'PPP')
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <Icons.calendar className="ml-auto size-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date('1900-01-01')
-                      }
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
+                <FormControl>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={'outline'}
+                          className={cn(
+                            'w-[240px] pl-3 text-left font-normal',
+                            !field.value && 'text-muted-foreground'
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, 'PPP')
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <Icons.calendar className="ml-auto size-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={new Date(field.value ?? '')}
+                        onSelect={(selectedDate) => {
+                          field.onChange(selectedDate?.toISOString());
+                        }}
+                        disabled={(date) =>
+                          date > new Date() || date < new Date('1900-01-01')
+                        }
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
@@ -133,37 +156,41 @@ export function WorkHistoryForm() {
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>End Date</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={'outline'}
-                        className={cn(
-                          'w-[240px] pl-3 text-left font-normal',
-                          !field.value && 'text-muted-foreground'
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, 'PPP')
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <Icons.calendar className="ml-auto size-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date('1900-01-01')
-                      }
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
+                <FormControl>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={'outline'}
+                          className={cn(
+                            'w-[240px] pl-3 text-left font-normal',
+                            !field.value && 'text-muted-foreground'
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, 'PPP')
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <Icons.calendar className="style-4 ml-auto opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={new Date(field.value ?? '')}
+                        onSelect={(selectedDate) => {
+                          field.onChange(selectedDate?.toISOString());
+                        }}
+                        disabled={(date) =>
+                          date > new Date() || date < new Date('1900-01-01')
+                        }
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
@@ -178,7 +205,7 @@ export function WorkHistoryForm() {
               <FormLabel>Job Description/Duties</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Summarize your experience, skills, and what you&rsquo;re looking for"
+                  placeholder="Summarize your experience and responsibilities"
                   className="resize-none"
                   {...field}
                 />
@@ -187,9 +214,7 @@ export function WorkHistoryForm() {
             </FormItem>
           )}
         />
-        <Button formAction={createWorkHistory} type="submit">
-          Add Work History
-        </Button>
+        <Button type="submit">Add Work History</Button>
       </form>
     </Form>
   );

@@ -2,12 +2,12 @@ import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 
 import { dashboardConfig } from '@/config/dashboard';
-import { DashboardNav } from '@/components/shared/dashboard-nav';
-import { MainNav } from '@/components/shared/main-nav';
-import { SiteFooter } from '@/components/shared/site-footer';
-import { UserAccountNav } from '@/components/shared/user-account-nav';
+import { MainNav } from '@/components/main-nav';
+import { SiteFooter } from '@/components/site-footer';
+import { UserAccountNav } from '@/components/user-account-nav';
 import { createClient } from '@/lib/supabase/server';
 import { readUserSession } from '@/lib/actions/read-user-session';
+import { DashboardNav } from './components/dashboard-nav';
 
 interface DashboardLayoutProps {
   children?: React.ReactNode;
@@ -27,7 +27,9 @@ export default async function DashboardLayout({
     .select()
     .eq('id', sessionData.session.user.id);
 
-  if (error) redirect('/error');
+  if (error) {
+    redirect('/error');
+  }
   if (!user) redirect('/login');
 
   return (

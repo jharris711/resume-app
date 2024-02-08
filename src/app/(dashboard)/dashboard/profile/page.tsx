@@ -19,7 +19,9 @@ export default async function SettingsProfilePage() {
     .select()
     .eq('id', sessionData.session.user.id);
 
-  if (error) redirect('/error');
+  if (error) {
+    redirect('/error');
+  }
   if (!profile) redirect('/login');
 
   return (

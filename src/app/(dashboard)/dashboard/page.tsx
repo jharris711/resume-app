@@ -8,11 +8,10 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card';
-
-import { CalendarDateRangePicker } from '@/components/shared/date-range-picker';
-import { DashboardOverview } from '@/components/shared/dashboard-overview';
-import { RecentSales } from '@/components/shared/recent-sales';
+import { CalendarDateRangePicker } from '@/components/date-range-picker';
 import { Icons } from '@/components/icons/icons';
+import { DashboardOverview } from './components/dashboard-overview';
+import { RecentResumesList } from './components/recent-resumes-list';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -92,7 +91,7 @@ const DashboardPage = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <RecentSales />
+            <RecentResumesList />
           </CardContent>
         </Card>
       </div>

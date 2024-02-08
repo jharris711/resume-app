@@ -36,7 +36,6 @@ export async function createWorkHistory(formData: FormData) {
     .select();
 
   if (error) {
-    console.log(error);
     redirect('/error');
   }
 
