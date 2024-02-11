@@ -4,9 +4,8 @@ import { redirect } from 'next/navigation';
 import { Search } from 'lucide-react';
 
 import { createClient } from '@/lib/supabase/server';
-import { MailDisplay } from './components/mail-display';
-// import { MailList } from './components/mail-list';
-import { mails } from './data';
+import { readUserSession } from '@/lib/actions/read-user-session';
+
 import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -16,7 +15,8 @@ import {
   ResizablePanel,
   ResizablePanelGroup
 } from '@/components/ui/resizable';
-import { readUserSession } from '@/lib/actions/read-user-session';
+
+// import { MailDisplay } from './components/mail-display';
 import { ResumeList } from './components/resume-list';
 
 type ResumePageProps = {};
@@ -41,8 +41,6 @@ export default async function ResumesPage({}: ResumePageProps) {
     .eq('user_id', user.id);
 
   if (error) console.error(error);
-
-  console.log(resumes);
 
   return (
     <TooltipProvider delayDuration={0}>

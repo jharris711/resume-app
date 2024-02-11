@@ -6,7 +6,7 @@ import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
 import { cn } from '@/lib/utils';
 import { Database } from '@/lib/types/supabase';
 
-import { Badge } from '@/components/ui/badge';
+/* import { Badge } from '@/components/ui/badge'; */
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 type Resume = Database['public']['Tables']['resumes']['Row'];
@@ -19,6 +19,8 @@ export function ResumeList({ resumes }: ResumeListProps) {
   const [selected, selectResume] = useState<Resume['id'] | null>(null);
 
   useEffect(() => {
+    if (!resumes.length) return;
+
     selectResume(resumes[0].id);
   }, [resumes]);
 
@@ -37,7 +39,7 @@ export function ResumeList({ resumes }: ResumeListProps) {
             <div className="flex w-full flex-col gap-1">
               <div className="flex items-center">
                 <div className="flex items-center gap-2">
-                  <div className="font-semibold">{resume.file_path}</div>
+                  <div className="font-semibold">{resume.file_name}</div>
                   {/* {!resume.read && (
                     <span className="flex size-2 rounded-full bg-blue-600" />
                   )} */}
@@ -76,7 +78,7 @@ export function ResumeList({ resumes }: ResumeListProps) {
   );
 }
 
-function getBadgeVariantFromLabel(
+/* function getBadgeVariantFromLabel(
   label: string
 ): ComponentProps<typeof Badge>['variant'] {
   if (['work'].includes(label.toLowerCase())) {
@@ -88,4 +90,4 @@ function getBadgeVariantFromLabel(
   }
 
   return 'secondary';
-}
+} */

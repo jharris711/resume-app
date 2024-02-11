@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileDropzoneCard } from '../components/file-dropzone-card';
+import { ResumeDropzoneCard } from '../components/resume-dropzone-card';
 import { readUserSession } from '@/lib/actions/read-user-session';
 import { redirect } from 'next/navigation';
 
@@ -12,7 +12,7 @@ export default async function page() {
 
   return (
     <div>
-      <FileDropzoneCard userId={user.id} />
+      <ResumeDropzoneCard userId={user.id} />
     </div>
   );
 }

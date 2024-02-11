@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useCallback } from 'react';
-import { useDropzone, type DropzoneOptions } from 'react-dropzone';
+import { useRouter } from 'next/navigation';
+import { useDropzone } from 'react-dropzone';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -12,8 +13,9 @@ import {
   Card,
   CardFooter
 } from '@/components/ui/card';
-import { createClient } from '@/lib/supabase/client';
 import { Icons } from '@/components/icons/icons';
+
+import { createClient } from '@/lib/supabase/client';
 
 const ACCEPTED_FILE_TYPES = {
   'application/pdf': ['.pdf'],
@@ -25,8 +27,9 @@ const ACCEPTED_FILE_TYPES = {
   'application/rtf': ['.rtf']
 };
 
-export function FileDropzoneCard({ userId }: { userId: string }) {
+export function ResumeDropzoneCard({ userId }: { userId: string }) {
   const [currentFile, setCurrentFile] = React.useState<File | null>(null);
+  const router = useRouter();
   const supabase = createClient();
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setCurrentFile(acceptedFiles[0]);
@@ -37,8 +40,9 @@ export function FileDropzoneCard({ userId }: { userId: string }) {
     accept: ACCEPTED_FILE_TYPES
   });
 
-  const handleUpload = async (e: React.FormEvent) => {
+  const handleUploadResume = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!currentFile)
       return {
         data: null,
@@ -62,14 +66,17 @@ export function FileDropzoneCard({ userId }: { userId: string }) {
       file_id: storedFile.id,
       /* @ts-ignore */
       file_path: storedFile.fullPath,
+      file_name: storedFile.path,
       updated_at: new Date(Date.now()).toISOString(),
       user_id: userId
     };
 
-    const { data, error: resumeUploadError } = await supabase
+    const { error: resumeUploadError } = await supabase
       .from('resumes')
       .upsert(resume)
       .select();
+
+    if (resumeUploadError) router.push('/error');
   };
 
   return (
@@ -114,7 +121,7 @@ export function FileDropzoneCard({ userId }: { userId: string }) {
       </CardContent>
       <form action="">
         <CardFooter className="flex w-full items-center justify-around gap-4">
-          <Button className="w-full" onClick={handleUpload}>
+          <Button className="w-full" onClick={handleUploadResume}>
             <Icons.upload className="mr-2 size-4" /> Upload
           </Button>
           <Button
