@@ -5,7 +5,7 @@ import { MainNavItem } from '@/lib/types';
 import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import { useLockBody } from '@/lib//hooks/use-lock-body';
-import { Icons } from './icons';
+import { Icons } from './icons/icons';
 
 interface MobileNavProps {
   items: MainNavItem[];

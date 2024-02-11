@@ -1,103 +1,98 @@
-import { Metadata } from 'next';
+import * as React from 'react';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { Search } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
+import { createClient } from '@/lib/supabase/server';
+import { MailDisplay } from './components/mail-display';
+// import { MailList } from './components/mail-list';
+import { mails } from './data';
+import { Separator } from '@/components/ui/separator';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card';
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup
+} from '@/components/ui/resizable';
+import { readUserSession } from '@/lib/actions/read-user-session';
+import { ResumeList } from './components/resume-list';
 
-import { CalendarDateRangePicker } from '@/components/shared/date-range-picker';
-import { DashboardOverview } from '@/components/shared/dashboard-overview';
-import { RecentSales } from '@/components/shared/recent-sales';
-import { Icons } from '@/components/shared/icons';
+type ResumePageProps = {};
 
-export const metadata: Metadata = {
-  title: 'Dashboard',
-  description: 'Example dashboard app built using the components.'
+const tabs = {
+  resumes: 'resumes',
+  jobDescriptions: 'job-descriptions'
 };
 
-const page = () => {
+export default async function ResumesPage({}: ResumePageProps) {
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
+  const { data: sessionData } = await readUserSession();
+
+  if (!sessionData.session) redirect('/login');
+
+  const { user } = sessionData.session;
+
+  const { data: resumes, error } = await supabase
+    .from('resumes')
+    .select()
+    .eq('user_id', user.id);
+
+  if (error) console.error(error);
+
+  console.log(resumes);
+
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
-      <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-        <div className="flex items-center space-x-2">
-          <CalendarDateRangePicker />
-          <Button>Download</Button>
-        </div>
-      </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Resumes</CardTitle>
-
-            <Icons.fileText className="text-muted-foreground size-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">23</div>
-            <p className="text-muted-foreground text-xs">resumes created</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Job Specs</CardTitle>
-
-            <Icons.clipboard className="text-muted-foreground size-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">15</div>
-            <p className="text-muted-foreground text-xs">listings uploaded</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Submissions</CardTitle>
-
-            <Icons.send className="text-muted-foreground size-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">12</div>
-            <p className="text-muted-foreground text-xs">resumes sent</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Edits</CardTitle>
-
-            <Icons.pencil className="text-muted-foreground size-4" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">57</div>
-            <p className="text-muted-foreground text-xs">recent changes</p>
-          </CardContent>
-        </Card>
-      </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4">
-          <CardHeader>
-            <CardTitle>Overview</CardTitle>
-          </CardHeader>
-          <CardContent className="pl-2">
-            <DashboardOverview />
-          </CardContent>
-        </Card>
-        <Card className="col-span-3">
-          <CardHeader>
-            <CardTitle>Recent Resumes</CardTitle>
-            <CardDescription>
-              Creations, updates, and submissions
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <RecentSales />
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+    <TooltipProvider delayDuration={0}>
+      <ResizablePanelGroup
+        direction="horizontal"
+        className="h-full max-h-[800px] items-stretch"
+      >
+        <ResizablePanel defaultSize={400}>
+          <Tabs defaultValue={tabs.resumes}>
+            <div className="flex items-center px-4 py-2">
+              <h1 className="text-xl font-bold">Resumes</h1>
+              <TabsList className="ml-auto">
+                <TabsTrigger
+                  value={tabs.resumes}
+                  className="text-zinc-600 dark:text-zinc-200"
+                >
+                  Resumes
+                </TabsTrigger>
+                <TabsTrigger
+                  value={tabs.jobDescriptions}
+                  className="text-zinc-600 dark:text-zinc-200"
+                >
+                  Jobs
+                </TabsTrigger>
+              </TabsList>
+            </div>
+            <Separator />
+            <div className="bg-background/95 supports-[backdrop-filter]:bg-background/60 p-4 backdrop-blur">
+              <form>
+                <div className="relative">
+                  <Search className="text-muted-foreground absolute left-2 top-2.5 size-4" />
+                  <Input placeholder="Search" className="pl-8" />
+                </div>
+              </form>
+            </div>
+            <TabsContent value={tabs.resumes} className="m-0">
+              <ResumeList resumes={resumes || []} />
+            </TabsContent>
+            <TabsContent value={tabs.jobDescriptions} className="m-0">
+              {/* <MailList items={mails.filter((item) => !item.read)} /> */}
+            </TabsContent>
+          </Tabs>
+        </ResizablePanel>
+        <ResizableHandle disabled />
+        <ResizablePanel defaultSize={750}>
+          {/* <MailDisplay
+            mail={mails.find((item) => item.id === mail.selected) || null}
+          /> */}
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </TooltipProvider>
   );
-};
-
-export default page;
+}

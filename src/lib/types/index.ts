@@ -1,4 +1,4 @@
-import { Icons } from '@/components/shared/icons';
+import { Icons } from '@/components/icons/icons';
 
 export type DashboardConfig = {
   mainNav: MainNavItem[];

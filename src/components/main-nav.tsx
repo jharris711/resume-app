@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import { siteConfig } from '@/config/site';
 import { MainNavItem } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { Icons } from './icons';
+import { Icons } from './icons/icons';
 import { MobileNav } from './mobile-nav';
 
 interface MainNavProps {
