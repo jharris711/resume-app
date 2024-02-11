@@ -31,6 +31,7 @@ export function ResumeDropzoneCard({ userId }: { userId: string }) {
   const [currentFile, setCurrentFile] = React.useState<File | null>(null);
   const router = useRouter();
   const supabase = createClient();
+
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setCurrentFile(acceptedFiles[0]);
   }, []);
@@ -113,7 +114,9 @@ export function ResumeDropzoneCard({ userId }: { userId: string }) {
         <div
           className={`flex w-full flex-col items-center rounded-lg border-2 ${isDragActive ? 'border-primary bg-primary-foreground border' : currentFile ? 'border-primary' : 'border-dashed border-gray-200'} p-6 text-center text-gray-200 shadow-sm hover:shadow-md`}
         >
-          <Icons.fileText className="size-8" />
+          <Icons.fileText
+            className={`size-8 ${currentFile ? 'stroke-primary' : ''}`}
+          />
           <p className="mt-4 text-sm leading-none">
             {currentFile ? `${currentFile.name}` : 'Drop files here'}
           </p>
@@ -122,12 +125,16 @@ export function ResumeDropzoneCard({ userId }: { userId: string }) {
       <form action="">
         <CardFooter className="flex w-full items-center justify-around gap-4">
           <Button className="w-full" onClick={handleUploadResume}>
-            <Icons.upload className="mr-2 size-4" /> Upload
+            <Icons.upload className="mr-2 size-4 " /> Upload
           </Button>
           <Button
             variant="outline"
             className="w-full"
-            onClick={() => setCurrentFile(null)}
+            onClick={(e: React.FormEvent) => {
+              e.preventDefault();
+
+              setCurrentFile(null);
+            }}
           >
             <Icons.trash className="mr-2 size-4" /> Reset
           </Button>

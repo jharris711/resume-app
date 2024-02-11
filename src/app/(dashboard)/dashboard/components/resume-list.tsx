@@ -8,21 +8,53 @@ import { Database } from '@/lib/types/supabase';
 
 /* import { Badge } from '@/components/ui/badge'; */
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { createClient } from '@/lib/supabase/client';
 
 type Resume = Database['public']['Tables']['resumes']['Row'];
 
 interface ResumeListProps {
-  resumes: Resume[];
+  initialResumeList: Resume[];
 }
 
-export function ResumeList({ resumes }: ResumeListProps) {
+export function ResumeList({ initialResumeList }: ResumeListProps) {
+  const [resumes, setResumes] = useState<Resume[]>(initialResumeList || []);
   const [selected, selectResume] = useState<Resume['id'] | null>(null);
+  const supabase = createClient();
 
   useEffect(() => {
-    if (!resumes.length) return;
+    if (!initialResumeList || !initialResumeList.length) return;
 
-    selectResume(resumes[0].id);
-  }, [resumes]);
+    selectResume(initialResumeList[0].id);
+  }, [initialResumeList]);
+
+  useEffect(
+    function subscribeToDb() {
+      const channel = supabase
+        .channel('resumes')
+        .on(
+          'postgres_changes',
+          { event: 'INSERT', schema: 'public', table: 'resumes' },
+          (payload) => {
+            setResumes((prevState) => [payload.new, ...prevState] as Resume[]);
+          }
+        )
+        .on(
+          'postgres_changes',
+          { event: 'DELETE', schema: 'public', table: 'resumes' },
+          (payload) => {
+            setResumes((prevState) => {
+              return prevState.filter((x) => x.id !== payload.old.id);
+            });
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    },
+    [supabase]
+  );
 
   return (
     <ScrollArea className="h-screen">

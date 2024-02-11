@@ -3,27 +3,36 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { Search } from 'lucide-react';
 
+import { Database } from '@/lib/types/supabase';
 import { createClient } from '@/lib/supabase/server';
 import { readUserSession } from '@/lib/actions/read-user-session';
 
 import { Separator } from '@/components/ui/separator';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { TooltipProvider } from '@/components/ui/tooltip';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger
+} from '@/components/ui/tooltip';
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup
 } from '@/components/ui/resizable';
+import { Icons } from '@/components/icons/icons';
 
 // import { MailDisplay } from './components/mail-display';
 import { ResumeList } from './components/resume-list';
+import { ResumeDropzoneCard } from './components/resume-dropzone-card';
 
+type Resume = Database['public']['Tables']['resumes']['Row'];
 type ResumePageProps = {};
 
 const tabs = {
   resumes: 'resumes',
-  jobDescriptions: 'job-descriptions'
+  addResume: 'add-resume'
 };
 
 export default async function ResumesPage({}: ResumePageProps) {
@@ -35,7 +44,7 @@ export default async function ResumesPage({}: ResumePageProps) {
 
   const { user } = sessionData.session;
 
-  const { data: resumes, error } = await supabase
+  const { data: initialResumeList, error } = await supabase
     .from('resumes')
     .select()
     .eq('user_id', user.id);
@@ -57,13 +66,27 @@ export default async function ResumesPage({}: ResumePageProps) {
                   value={tabs.resumes}
                   className="text-zinc-600 dark:text-zinc-200"
                 >
-                  Resumes
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Icons.fileText className="size-5" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>View</p>
+                    </TooltipContent>
+                  </Tooltip>{' '}
                 </TabsTrigger>
                 <TabsTrigger
-                  value={tabs.jobDescriptions}
+                  value={tabs.addResume}
                   className="text-zinc-600 dark:text-zinc-200"
                 >
-                  Jobs
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Icons.add className="size-5" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Add</p>
+                    </TooltipContent>
+                  </Tooltip>
                 </TabsTrigger>
               </TabsList>
             </div>
@@ -77,10 +100,10 @@ export default async function ResumesPage({}: ResumePageProps) {
               </form>
             </div>
             <TabsContent value={tabs.resumes} className="m-0">
-              <ResumeList resumes={resumes || []} />
+              <ResumeList initialResumeList={initialResumeList as Resume[]} />
             </TabsContent>
-            <TabsContent value={tabs.jobDescriptions} className="m-0">
-              {/* <MailList items={mails.filter((item) => !item.read)} /> */}
+            <TabsContent value={tabs.addResume} className="container">
+              <ResumeDropzoneCard userId={user.id} />
             </TabsContent>
           </Tabs>
         </ResizablePanel>
