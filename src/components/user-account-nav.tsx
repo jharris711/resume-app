@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { UserAvatar } from '@/components/shared/user-avatar';
+import { UserAvatar } from '@/components/user-avatar';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 
