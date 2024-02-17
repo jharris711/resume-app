@@ -96,9 +96,7 @@ export function ResumeDropzoneCard({ userId }: { userId: string }) {
             </>
           ) : (
             <>
-              <CardTitle className="mt-4 shrink-0">
-                Drag and drop your resume
-              </CardTitle>
+              <CardTitle className="mt-4 shrink-0">Drop your resume</CardTitle>
               <CardDescription className="mt-2 text-sm leading-none">
                 or click to browse
               </CardDescription>

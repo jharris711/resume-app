@@ -14,18 +14,19 @@ type Resume = Database['public']['Tables']['resumes']['Row'];
 
 interface ResumeListProps {
   initialResumeList: Resume[];
+  resumes: Resume[];
+  selectedResume: Resume | null;
+  setResumes: (value: React.SetStateAction<Resume[]>) => void;
+  setSelectedResume: (value: React.SetStateAction<Resume | null>) => void;
 }
 
-export function ResumeList({ initialResumeList }: ResumeListProps) {
-  const [resumes, setResumes] = useState<Resume[]>(initialResumeList || []);
-  const [selected, selectResume] = useState<Resume['id'] | null>(null);
+export function ResumeList({
+  resumes,
+  selectedResume,
+  setResumes,
+  setSelectedResume
+}: ResumeListProps) {
   const supabase = createClient();
-
-  useEffect(() => {
-    if (!initialResumeList || !initialResumeList.length) return;
-
-    selectResume(initialResumeList[0].id);
-  }, [initialResumeList]);
 
   useEffect(
     function subscribeToDb() {
@@ -53,7 +54,7 @@ export function ResumeList({ initialResumeList }: ResumeListProps) {
         supabase.removeChannel(channel);
       };
     },
-    [supabase]
+    [supabase, setResumes]
   );
 
   return (
@@ -64,9 +65,9 @@ export function ResumeList({ initialResumeList }: ResumeListProps) {
             key={resume.id}
             className={cn(
               'hover:bg-accent flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all',
-              selected === resume.id && 'bg-muted'
+              selectedResume?.id === resume.id && 'bg-muted'
             )}
-            onClick={() => selectResume(resume.id)}
+            onClick={() => setSelectedResume(resume)}
           >
             <div className="flex w-full flex-col gap-1">
               <div className="flex items-center">
@@ -79,7 +80,7 @@ export function ResumeList({ initialResumeList }: ResumeListProps) {
                 <div
                   className={cn(
                     'ml-auto text-xs',
-                    selected === resume.id
+                    selectedResume?.id === resume.id
                       ? 'text-foreground'
                       : 'text-muted-foreground'
                   )}

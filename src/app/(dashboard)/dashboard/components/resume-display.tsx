@@ -38,13 +38,19 @@ import {
   TooltipContent,
   TooltipTrigger
 } from '@/components/ui/tooltip';
-import { Mail } from '../data';
+import { Database } from '@/lib/types/supabase';
 
-interface MailDisplayProps {
-  mail: Mail | null;
+type Resume = Database['public']['Tables']['resumes']['Row'];
+
+interface ResumeDisplayProps {
+  resume: Resume | null;
+  selectedFilePublicUrl: string;
 }
 
-export function MailDisplay({ mail }: MailDisplayProps) {
+export function ResumeDisplay({
+  resume,
+  selectedFilePublicUrl
+}: ResumeDisplayProps) {
   const today = new Date();
 
   return (
@@ -53,7 +59,7 @@ export function MailDisplay({ mail }: MailDisplayProps) {
         <div className="flex items-center gap-2">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={!mail}>
+              <Button variant="ghost" size="icon" disabled={!resume}>
                 <Archive className="size-4" />
                 <span className="sr-only">Archive</span>
               </Button>
@@ -62,7 +68,7 @@ export function MailDisplay({ mail }: MailDisplayProps) {
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={!mail}>
+              <Button variant="ghost" size="icon" disabled={!resume}>
                 <ArchiveX className="size-4" />
                 <span className="sr-only">Move to junk</span>
               </Button>
@@ -71,7 +77,7 @@ export function MailDisplay({ mail }: MailDisplayProps) {
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={!mail}>
+              <Button variant="ghost" size="icon" disabled={!resume}>
                 <Trash2 className="size-4" />
                 <span className="sr-only">Move to trash</span>
               </Button>
@@ -83,7 +89,7 @@ export function MailDisplay({ mail }: MailDisplayProps) {
             <Popover>
               <PopoverTrigger asChild>
                 <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" disabled={!mail}>
+                  <Button variant="ghost" size="icon" disabled={!resume}>
                     <Clock className="size-4" />
                     <span className="sr-only">Snooze</span>
                   </Button>
@@ -142,7 +148,7 @@ export function MailDisplay({ mail }: MailDisplayProps) {
         <div className="ml-auto flex items-center gap-2">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={!mail}>
+              <Button variant="ghost" size="icon" disabled={!resume}>
                 <Reply className="size-4" />
                 <span className="sr-only">Reply</span>
               </Button>
@@ -151,7 +157,7 @@ export function MailDisplay({ mail }: MailDisplayProps) {
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={!mail}>
+              <Button variant="ghost" size="icon" disabled={!resume}>
                 <ReplyAll className="size-4" />
                 <span className="sr-only">Reply all</span>
               </Button>
@@ -160,7 +166,7 @@ export function MailDisplay({ mail }: MailDisplayProps) {
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" disabled={!mail}>
+              <Button variant="ghost" size="icon" disabled={!resume}>
                 <Forward className="size-4" />
                 <span className="sr-only">Forward</span>
               </Button>
@@ -171,7 +177,7 @@ export function MailDisplay({ mail }: MailDisplayProps) {
         <Separator orientation="vertical" className="mx-2 h-6" />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" disabled={!mail}>
+            <Button variant="ghost" size="icon" disabled={!resume}>
               <MoreVertical className="size-4" />
               <span className="sr-only">More</span>
             </Button>
@@ -185,36 +191,46 @@ export function MailDisplay({ mail }: MailDisplayProps) {
         </DropdownMenu>
       </div>
       <Separator />
-      {mail ? (
+      {resume ? (
         <div className="flex flex-1 flex-col">
           <div className="flex items-start p-4">
             <div className="flex items-start gap-4 text-sm">
               <Avatar>
-                <AvatarImage alt={mail.name} />
+                <AvatarImage alt={resume.file_name || ''} />
                 <AvatarFallback>
-                  {mail.name
-                    .split(' ')
-                    .map((chunk) => chunk[0])
-                    .join('')}
+                  {resume.file_name
+                    ? resume.file_name
+                        .split(' ')
+                        .map((chunk) => chunk[0])
+                        .join('')
+                    : 'Resume'}
                 </AvatarFallback>
               </Avatar>
               <div className="grid gap-1">
-                <div className="font-semibold">{mail.name}</div>
-                <div className="line-clamp-1 text-xs">{mail.subject}</div>
-                <div className="line-clamp-1 text-xs">
-                  <span className="font-medium">Reply-To:</span> {mail.email}
-                </div>
+                <div className="font-semibold">{resume.file_name}</div>
+                <div className="line-clamp-1 text-xs">{resume.file_path}</div>
               </div>
             </div>
-            {mail.date && (
+            {resume.created_at && (
               <div className="text-muted-foreground ml-auto text-xs">
-                {format(new Date(mail.date), 'PPpp')}
+                {format(new Date(resume.created_at), 'PPpp')}
               </div>
             )}
           </div>
           <Separator />
           <div className="flex-1 whitespace-pre-wrap p-4 text-sm">
-            {mail.text}
+            {/* {resume.text} */}
+            <object
+              data={selectedFilePublicUrl}
+              type="application/pdf"
+              width="100%"
+              height="100%"
+            >
+              <p>
+                Alternative text - include a link{' '}
+                <a href={selectedFilePublicUrl}>to the PDF!</a>
+              </p>
+            </object>
           </div>
           <Separator className="mt-auto" />
           <div className="p-4">
@@ -222,7 +238,7 @@ export function MailDisplay({ mail }: MailDisplayProps) {
               <div className="grid gap-4">
                 <Textarea
                   className="p-4"
-                  placeholder={`Reply ${mail.name}...`}
+                  placeholder={`Reply ${resume.file_name}...`}
                 />
                 <div className="flex items-center">
                   <Label
