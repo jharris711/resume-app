@@ -85,17 +85,17 @@ export function Resume({ userId }: ResumeProps) {
             </header>
             <div className="flex-1 space-y-4 overflow-y-auto p-4">
               <div className="flex items-end justify-start">
-                <div className="max-w-xs rounded-lg border-2 border-blue-100 px-3 py-2 text-blue-800 dark:border-blue-900 dark:text-blue-100">
+                <div className="border-secondary max-w-xs rounded-lg border-2 px-3 py-2 text-blue-800 shadow-sm dark:text-blue-100">
                   <p>Hello, how can I assist you today?</p>
                 </div>
               </div>
               <div className="flex items-end justify-end">
-                <div className="border-primary dark:border-primary max-w-xs rounded-lg border-2 px-3 py-2 text-green-800 dark:text-green-100">
+                <div className="border-primary  dark:border-primary max-w-xs rounded-lg border-2 px-3 py-2 text-green-800 shadow-sm dark:text-green-100">
                   <p>I need help with my account.</p>
                 </div>
               </div>
               <div className="flex items-end justify-start">
-                <div className="max-w-xs rounded-lg border-2 border-blue-100 px-3 py-2 text-blue-800 dark:border-blue-900 dark:text-blue-100">
+                <div className="border-secondary max-w-xs  rounded-lg border-2 px-3 py-2 text-blue-800 shadow-sm dark:text-blue-100">
                   <p>
                     Of course, I&apos;d be happy to help. Could you please
                     provide more details?
