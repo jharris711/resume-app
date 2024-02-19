@@ -4,7 +4,8 @@ const nextConfig = {
     esmExternals: 'loose' // required for the canvas to work
   },
   webpack: (config) => {
-    config.externals = [...config.externals, { canvas: 'canvas' }]; // required for the canvas to work
+    config.resolve.alias.canvas = false;
+
     return config;
   }
 };

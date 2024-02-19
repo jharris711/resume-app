@@ -1,57 +1,40 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Search } from 'lucide-react';
 
 import { createClient } from '@/lib/supabase/client';
 import { Database } from '@/lib/types/supabase';
-import { Separator } from '@/components/ui/separator';
-import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from '@/components/ui/tooltip';
+
+import { CardContent, Card } from '@/components/ui/card';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup
 } from '@/components/ui/resizable';
-import { Icons } from '@/components/icons/icons';
 
-import { ResumeList } from './resume-list';
 import { ResumeDropzoneCard } from './resume-dropzone-card';
-import { ResumeDisplay } from './resume-display';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 type Resume = Database['public']['Tables']['resumes']['Row'];
 
 interface ResumeProps {
-  initialResumeList: Resume[];
   userId: string;
 }
 
-const tabs = {
-  resumes: 'resumes',
-  addResume: 'add-resume'
-};
-
-export default function Resume({ initialResumeList, userId }: ResumeProps) {
-  const [resumes, setResumes] = useState<Resume[]>(initialResumeList || []);
-  const [selectedResume, setSelectedResume] = useState<Resume | null>(
-    initialResumeList[0]
-  );
+export default function Resume({ userId }: ResumeProps) {
+  const [resume, setResume] = useState<Resume | null>(null);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string>('');
   const supabase = createClient();
 
   useEffect(() => {
-    if (!selectedResume || !selectedResume.file_name) return;
-    console.log('selectedResume.file_path', selectedResume.file_path);
+    if (!resume || !resume.file_name) return;
+    console.log('resume.file_path', resume.file_path);
 
     supabase.storage
       .from('resumes')
-      .createSignedUrl(selectedResume.file_name, 60)
+      .createSignedUrl(resume.file_name, 60)
       .then(({ data }) => {
         if (!data) return;
         console.log('publicUrl', data.signedUrl);
@@ -59,7 +42,7 @@ export default function Resume({ initialResumeList, userId }: ResumeProps) {
         setSelectedFileUrl(data.signedUrl);
       })
       .catch((err) => {});
-  }, [selectedResume, supabase]);
+  }, [resume, supabase]);
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -67,70 +50,70 @@ export default function Resume({ initialResumeList, userId }: ResumeProps) {
         direction="horizontal"
         className="h-full max-h-[800px] items-stretch"
       >
-        <ResizablePanel defaultSize={400}>
-          <Tabs defaultValue={tabs.resumes}>
-            <div className="flex items-center px-4 py-2">
-              <h1 className="text-xl font-bold">Resumes</h1>
-              <TabsList className="ml-auto">
-                <TabsTrigger
-                  value={tabs.resumes}
-                  className="text-zinc-600 dark:text-zinc-200"
-                >
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Icons.fileText className="size-5" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>View</p>
-                    </TooltipContent>
-                  </Tooltip>{' '}
-                </TabsTrigger>
-                <TabsTrigger
-                  value={tabs.addResume}
-                  className="text-zinc-600 dark:text-zinc-200"
-                >
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Icons.add className="size-5" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Add</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TabsTrigger>
-              </TabsList>
-            </div>
-            <Separator />
-            <div className="bg-background/95 supports-[backdrop-filter]:bg-background/60 p-4 backdrop-blur">
-              <form>
-                <div className="relative">
-                  <Search className="text-muted-foreground absolute left-2 top-2.5 size-4" />
-                  <Input placeholder="Search" className="pl-8" />
-                </div>
-              </form>
-            </div>
-            <TabsContent value={tabs.resumes} className="m-0">
-              <ResumeList
-                initialResumeList={initialResumeList as Resume[]}
-                resumes={resumes}
-                selectedResume={selectedResume}
-                setResumes={setResumes}
-                setSelectedResume={setSelectedResume}
-              />
-            </TabsContent>
-            <TabsContent value={tabs.addResume} className="container">
-              <ResumeDropzoneCard userId={userId} />
-            </TabsContent>
-          </Tabs>
+        <ResizablePanel
+          defaultSize={400}
+          className="container flex flex-col gap-2"
+        >
+          <ResumeDropzoneCard userId={userId} setResume={setResume} />
+
+          <Card className="max-size-half flex-1 whitespace-pre-wrap text-sm">
+            <CardContent className="flex size-full cursor-pointer items-center justify-center p-4">
+              {/* {resume.text} */}
+              <object
+                data={selectedFileUrl}
+                type="application/pdf"
+                width="100%"
+                height="100%"
+              >
+                <p>
+                  Alternative text - include a link{' '}
+                  <a href={selectedFileUrl}>to the PDF!</a>
+                </p>
+              </object>
+            </CardContent>
+          </Card>
         </ResizablePanel>
         <ResizableHandle disabled />
-        <ResizablePanel defaultSize={750}>
-          <ResumeDisplay
-            resume={
-              resumes.find((item) => item.id === selectedResume?.id) || null
-            }
-            selectedFilePublicUrl={selectedFileUrl}
-          />
+        <ResizablePanel
+          defaultSize={750}
+          className="container flex flex-col gap-2"
+        >
+          <main className="flex h-full flex-col">
+            <header className="p-4 shadow-md">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                Chat with our assistant
+              </h1>
+            </header>
+            <div className="flex-1 space-y-4 overflow-y-auto p-4">
+              <div className="flex items-end justify-start">
+                <div className="max-w-xs rounded-lg bg-blue-100 px-3 py-2 text-blue-800 dark:bg-blue-900 dark:text-blue-100">
+                  <p>Hello, how can I assist you today?</p>
+                </div>
+              </div>
+              <div className="flex items-end justify-end">
+                <div className="max-w-xs rounded-lg bg-green-100 px-3 py-2 text-green-800 dark:bg-green-900 dark:text-green-100">
+                  <p>I need help with my account.</p>
+                </div>
+              </div>
+              <div className="flex items-end justify-start">
+                <div className="max-w-xs rounded-lg bg-blue-100 px-3 py-2 text-blue-800 dark:bg-blue-900 dark:text-blue-100">
+                  <p>
+                    Of course, I&apos;d be happy to help. Could you please
+                    provide more details?
+                  </p>
+                </div>
+              </div>
+            </div>
+            <Card className="bg-white p-4 shadow-md dark:bg-gray-800">
+              <div className="flex space-x-2">
+                <Input
+                  className="flex-1"
+                  placeholder="Type your message here..."
+                />
+                <Button>Send</Button>
+              </div>
+            </Card>
+          </main>
         </ResizablePanel>
       </ResizablePanelGroup>
     </TooltipProvider>
