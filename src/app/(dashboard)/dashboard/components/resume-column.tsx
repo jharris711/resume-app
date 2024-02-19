@@ -23,7 +23,7 @@ interface ResumeProps {
   userId: string;
 }
 
-export default function Resume({ userId }: ResumeProps) {
+export default function ResumeColumn({ userId }: ResumeProps) {
   const [resume, setResume] = useState<Resume | null>(null);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string>('');
   const supabase = createClient();
