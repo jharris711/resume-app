@@ -23,7 +23,7 @@ interface ResumeProps {
   userId: string;
 }
 
-export default function ResumeColumn({ userId }: ResumeProps) {
+export function Resume({ userId }: ResumeProps) {
   const [resume, setResume] = useState<Resume | null>(null);
   const [selectedFileUrl, setSelectedFileUrl] = useState<string>('');
   const supabase = createClient();
@@ -58,7 +58,6 @@ export default function ResumeColumn({ userId }: ResumeProps) {
 
           <Card className="max-size-half flex-1 whitespace-pre-wrap text-sm">
             <CardContent className="flex size-full cursor-pointer items-center justify-center p-4">
-              {/* {resume.text} */}
               <object
                 data={selectedFileUrl}
                 type="application/pdf"
@@ -79,24 +78,24 @@ export default function ResumeColumn({ userId }: ResumeProps) {
           className="container flex flex-col gap-2"
         >
           <main className="flex h-full flex-col">
-            <header className="p-4 shadow-md">
+            <header className="p-4">
               <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                Chat with our assistant
+                Resume Assistant
               </h1>
             </header>
             <div className="flex-1 space-y-4 overflow-y-auto p-4">
               <div className="flex items-end justify-start">
-                <div className="max-w-xs rounded-lg bg-blue-100 px-3 py-2 text-blue-800 dark:bg-blue-900 dark:text-blue-100">
+                <div className="max-w-xs rounded-lg border-2 border-blue-100 px-3 py-2 text-blue-800 dark:border-blue-900 dark:text-blue-100">
                   <p>Hello, how can I assist you today?</p>
                 </div>
               </div>
               <div className="flex items-end justify-end">
-                <div className="max-w-xs rounded-lg bg-green-100 px-3 py-2 text-green-800 dark:bg-green-900 dark:text-green-100">
+                <div className="border-primary dark:border-primary max-w-xs rounded-lg border-2 px-3 py-2 text-green-800 dark:text-green-100">
                   <p>I need help with my account.</p>
                 </div>
               </div>
               <div className="flex items-end justify-start">
-                <div className="max-w-xs rounded-lg bg-blue-100 px-3 py-2 text-blue-800 dark:bg-blue-900 dark:text-blue-100">
+                <div className="max-w-xs rounded-lg border-2 border-blue-100 px-3 py-2 text-blue-800 dark:border-blue-900 dark:text-blue-100">
                   <p>
                     Of course, I&apos;d be happy to help. Could you please
                     provide more details?
