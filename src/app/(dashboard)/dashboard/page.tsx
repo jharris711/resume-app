@@ -26,10 +26,5 @@ export default async function ResumesPage() {
 
   if (error) console.error(error);
 
-  return (
-    <Resume
-      initialResumeList={initialResumeList as Resume[]}
-      userId={user.id}
-    />
-  );
+  return <Resume userId={user.id} />;
 }
