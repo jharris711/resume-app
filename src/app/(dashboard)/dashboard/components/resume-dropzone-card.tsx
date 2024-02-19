@@ -16,6 +16,7 @@ import {
 import { Icons } from '@/components/icons/icons';
 
 import { createClient } from '@/lib/supabase/client';
+import { Database } from '@/lib/types/supabase';
 
 const ACCEPTED_FILE_TYPES = {
   'application/pdf': ['.pdf'],
@@ -27,7 +28,17 @@ const ACCEPTED_FILE_TYPES = {
   'application/rtf': ['.rtf']
 };
 
-export function ResumeDropzoneCard({ userId }: { userId: string }) {
+type Resume = Database['public']['Tables']['resumes']['Row'];
+
+interface ResumeDropzoneCardProps {
+  userId: string;
+  setResume: React.Dispatch<React.SetStateAction<Resume | null>>;
+}
+
+export function ResumeDropzoneCard({
+  userId,
+  setResume
+}: ResumeDropzoneCardProps) {
   const [currentFile, setCurrentFile] = React.useState<File | null>(null);
   const router = useRouter();
   const supabase = createClient();
@@ -78,13 +89,15 @@ export function ResumeDropzoneCard({ userId }: { userId: string }) {
       .select();
 
     if (resumeUploadError) router.push('/error');
+
+    setResume(resume as Resume);
   };
 
   return (
-    <Card className="size-full">
+    <Card className="size-half">
       <CardHeader className="flex flex-col items-center p-4">
         <div className="text-center">
-          <Icons.upload className="mx-auto size-12" />
+          {/* <Icons.upload className="mx-auto size-12" /> */}
           {isDragActive ? (
             <>
               <CardTitle className="mt-4 shrink-0">
